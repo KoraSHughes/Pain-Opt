@@ -36,5 +36,5 @@ def combined_pain(pain_scores, mod=[1,1]):
 """ Intended application
 Run optimization trial & store attempted stimulation params in an array.
 Calculate the pain per stimulation event in that trial using pain_function
-
+Use MOP, RPD, & combined_pain to understand the pain-quality of the experiment
 """
