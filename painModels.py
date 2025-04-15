@@ -1,4 +1,6 @@
-def pain_function(trials, weights=[3,2], max_amp=200, max_pw=5):
+# Note: all of these are assumptions, in future implementations we can make these unknown
+
+def pain_function(trials, max_params=[200, 500], weights=[3,2]):
     """
     Input: array of model parameters for each n stimulation events
             can also weight the degree to which parameters contribute to pain
@@ -6,11 +8,16 @@ def pain_function(trials, weights=[3,2], max_amp=200, max_pw=5):
     """
     # *Note: amplitude in microvolts, pulse-width in microseconds
     pain = []
-    for amp, pw in trials:
-        this_pain = 0
-        this_pain += weights[0]*amp/max_amp
-        this_pain += weights[1]*pw/max_pw
-        pain.append(this_pain)
+    for i in range(len(trials)):
+        instant_pain(trials[i], max_params, weights)
+    return pain
+
+def instant_pain(params, max_params, weights):
+    """ params = [amplitude, pulse_width] """
+    assert len(params) == len(weights) == len(max_params), "input parameters, weights, and maximum params must be identical in length"
+    pain = 0
+    for i in range(len(params)):  # for each parameter to our waveform
+        pain += weights[i] * (params[i]/max_params[i])
     return pain
 
 
