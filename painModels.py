@@ -27,13 +27,16 @@ def MOP(pain_scores, mod=0.2):
     pain = max(pain_scores)*0.19 + pain_scores[-1]*0.14
     return pain*mod
 
-def RPD(pain_scores, mod=0.7, deg=2, include_lower=False):
+max_pain = 10
+def RPD(pain_scores, mod=2, deg=2, include_lower=True):
     """ principle 2 - relative pain distortion
     calculates the pain accrued over time """
     pain = 0
     for i in range(1, len(pain_scores)):
-        if include_lower or (pain_scores[i] > pain_scores[i-1]):
+        if pain_scores[i] > pain_scores[i-1]:
             pain += abs(pain_scores[i] - pain_scores[i-1])**deg
+        elif include_lower:
+            pain -= (abs(pain_scores[i] - pain_scores[i-1])/max_pain)**deg
     return pain*mod
 
 def combined_pain(pain_scores, mod=[1,1]):
