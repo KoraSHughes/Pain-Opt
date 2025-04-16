@@ -1,5 +1,11 @@
 # Note: all of these are assumptions, in future implementations we can make these unknown
-max_pain=10
+""" Intended application
+Run optimization trial & store attempted stimulation params in an array.
+Calculate the pain per stimulation event in that trial using pain_function().
+Evaluate model pain via total_pain()
+"""
+
+MAX_PAIN = 10
 def pain_function(trials, max_params=[200, 500], weights=[3,2], include_rpd=True):
     """
     Input: array of model parameters for each n stimulation events
@@ -13,8 +19,8 @@ def pain_function(trials, max_params=[200, 500], weights=[3,2], include_rpd=True
         if include_rpd:  # tldr exaserbates the change in percieved pain +-[0,1]
             last_pain = 0 if len(pain) == 0 else pain[-1]
             this_pain += RPD(last_pain, this_pain)
-            if this_pain > max_pain:
-                this_pain = max_pain
+            if this_pain > MAX_PAIN:
+                this_pain = MAX_PAIN
             elif this_pain < 0:
                 this_pain = 0
         pain.append(this_pain)
@@ -32,9 +38,9 @@ def RPD(last_pain, curr_pain, include_lower=True, deg=2):
     """ principle 2 - relative pain distortion
     calculates the distortion in pain reported """
     if curr_pain > last_pain:
-        return (abs(curr_pain - last_pain)/max_pain)**deg
+        return (abs(curr_pain - last_pain)/MAX_PAIN)**deg
     elif include_lower:
-        return -1 * (abs(curr_pain - last_pain)/max_pain)**deg
+        return -1 * (abs(curr_pain - last_pain)/MAX_PAIN)**deg
     return 0
 
 """ end of study pain recall EOS_recall --> mean, peak, end
@@ -61,11 +67,3 @@ def pain_recall(pain_scores, include_mean=True):
         pain_mean = mean_mod*sum(pain_scores)/len(pain_scores)
         return (mop + pain_mean)/3
     return mop/2
-    
-
-
-""" Intended application
-Run optimization trial & store attempted stimulation params in an array.
-Calculate the pain per stimulation event in that trial using pain_function().
-Evaluate model pain via total_pain()
-"""
