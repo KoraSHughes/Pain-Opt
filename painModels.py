@@ -23,7 +23,8 @@ def instant_pain(params, max_params, weights):
 
 def MOP(pain_scores, mod=0.2):
     """ function describing principle 1 - memory of pain """
-    pain = max(pain_scores)*0.1 + pain_scores[-1]*0.5
+    # https://pmc.ncbi.nlm.nih.gov/articles/PMC3012151/table/T2/
+    pain = max(pain_scores)*0.19 + pain_scores[-1]*0.14
     return pain*mod
 
 def RPD(pain_scores, mod=0.7, deg=2, include_lower=False):
