@@ -64,9 +64,10 @@ def pain_recall(pain_scores):
         total pain the patient recalls
         takes a weighted average of the peak, end, and mean estimates
     """
-    mop = memory_pain(pain_scores)
-    pain_mean = mean_mod*sum(pain_scores)/len(pain_scores)
-    return (2*mop + pain_mean)/3
+    pp = peak_mod*max(pain_scores)
+    ep = end_mod*pain_scores[-1]
+    mp = mean_mod*sum(pain_scores)/len(pain_scores)
+    return (1.07*mp + 0.3*pp + 0.1*ep)/(1.07+0.3+0.1)
 
 
 # helper for testing
@@ -74,7 +75,8 @@ import pandas as pd
 def calculate_pains(experiment, max_params=[5,50], param_weights=[5,3], rpd_weight=2):
     # TODO: make names versatile in case the params change
     exp_names = ["Amplitude (nA)", "Pulse Width (ms)", "Stimulation Event",
-            "Instant Pain", "Distorted Pain", "Memory of Pain", "Total Recalled Pain"]
+            "Instant Pain", "Percieved Pain", "Memory of Pain", "Mean Inst Pain",
+            "Mean Perc Pain", "Total Recalled Pain"]
     stim_events = len(experiment)
     # calculate instantenous pain
     inst_pain = []
@@ -84,6 +86,8 @@ def calculate_pains(experiment, max_params=[5,50], param_weights=[5,3], rpd_weig
     distorted_pain = add_relative_pain(inst_pain, rpd_weight, True)
     # calculate memory of/recalled pain
     mem_pain = memory_pain(distorted_pain)
+    mean_inst_pain = sum(inst_pain)/stim_events
+    mean_perc_pain = sum(distorted_pain)/stim_events
     recalled_pain = pain_recall(distorted_pain)
 
     # construct dataframe
@@ -92,5 +96,7 @@ def calculate_pains(experiment, max_params=[5,50], param_weights=[5,3], rpd_weig
     exp[exp_names[3]] = inst_pain  # add inst pain
     exp[exp_names[4]] = distorted_pain  # add pain with RPD distortion
     exp[exp_names[5]] = [mem_pain for i in range(stim_events)]  # add memory pain
-    exp[exp_names[6]] = [recalled_pain for i in range(stim_events)]  # add recalled pain
+    exp[exp_names[6]] = [mean_inst_pain for i in range(stim_events)]  # add mean pain
+    exp[exp_names[7]] = [mean_perc_pain for i in range(stim_events)]  # add mean pain
+    exp[exp_names[8]] = [recalled_pain for i in range(stim_events)]  # add recalled pain
     return exp
