@@ -2,7 +2,7 @@ from neuron import h,gui
 import numpy as np
 from scipy.signal import find_peaks
 
-def run_simulation(amplitude, pulse_width, sim_duration=10, stim_delay=5, plot_traces=True):
+def run_simulation(amplitude, pulse_width, sim_duration=10, stim_delay=5, plot_traces=False):
     print(amplitude)
     print(pulse_width)
     
