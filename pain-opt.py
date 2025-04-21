@@ -13,6 +13,7 @@ from painModels import (
 # visualization imports
 import matplotlib.pyplot as plt
 import plotly.express as px
+from tqdm import tqdm
 
 np.random.seed(23)
 
@@ -117,6 +118,7 @@ def BO_loop(opt_trials=25,
             pw_bounds=(0.01, 30),
             grid=120,
             make_plots=True):
+    max_bounds = (amp_bounds[1], pw_bounds[1])
     kernel = RBF([10.0, 300.0], length_scale_bounds=(1e-3, 1e5))
     gp = GaussianProcessRegressor(kernel=kernel,
                                 optimizer=None,
@@ -137,14 +139,17 @@ def BO_loop(opt_trials=25,
     y = (y_raw - mu_y) / sd_y
     gp.fit(X, y)
 
-    if make_plots:
-        mu0, _ = gp.predict(X_grid, return_std=True)
-        _plot_surface(mu_y + mu0*sd_y, X, A, PW, step=0)
-
-    # ── BO iterations ────────────────────────────────────────────────
-    max_bounds = (amp_bounds[1], pw_bounds[1])
     last_params = []
-    for k in range(1, opt_trials + 1):
+    if make_plots:
+        mu0init, _ = gp.predict(X_grid, return_std=True)
+        pain_factors = scale_pain(X_grid, last_params, 1, opt_trials, max_bounds)
+        mu0 = np.multiply(pain_factors, mu0init)
+        _plot_surface(mu_y + mu0init*sd_y, X, A, PW, step=0)
+        print("Pain Informed:")
+        _plot_surface(mu_y + mu0*sd_y, X, A, PW, step=0)
+    
+    # ── BO iterations ────────────────────────────────────────────────
+    for k in tqdm(range(1, opt_trials + 1)):
         oldmu, sd = gp.predict(X_grid, return_std=True)
         # ! derive pain factors
         pain_factors = scale_pain(X_grid, last_params, k, opt_trials, max_bounds)
@@ -164,6 +169,10 @@ def BO_loop(opt_trials=25,
 
         if make_plots:
             mu_pred, _ = gp.predict(X_grid, return_std=True)
+            pain_factors = scale_pain(X_grid, last_params, k, opt_trials, max_bounds)
+            mu = np.multiply(pain_factors, oldmu)
+            _plot_surface(mu_y + mu_pred*sd_y, X, A, PW, step=k)
+            print("Pain Informed:")
             _plot_surface(mu_y + mu_pred*sd_y, X, A, PW, step=k)
 
     # ── final history plot ───────────────────────────────────────────
