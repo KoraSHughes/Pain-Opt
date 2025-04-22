@@ -11,6 +11,45 @@ from sklearn.gaussian_process.kernels import RBF
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 
+# Imports custom pain-informed Bayes Opt
+# from simupain_info_bandit_arms import Arm
+from simulation.pain_info_bandit_arms import Arm
+
+# CONSTANTS
+TOTAL_ITER = 300
+CELL_IDS = [6, 36] # We used in both HW3/HW4; now for analytical consistency.
+
+
+# Imports the pain informed bandit arm
+# NOTE: Use cell_ID 6 or 36 for simulations, both are in cells/SaveState
+# Arm1 = Tweak amp, Arm2 = Tweak PW, Arm3 = Tweak Both
+arm1 = Arm.remote(cell_ID=6, total_iter=TOTAL_ITER, )
+arm1 = Arm.remote(noise_level=0.2, cell_ID=6, non_stationary=False,
+                  switch_points=switch_points,total_iterations = total_iterations)
+arm2 = 
+arms = [arm1, arm2]
+
+# Uncomment the following block to test reward retrieval for each arm at time point 0
+iteration = 0
+# Retrieve observed rewards (with noise) at iteration 0
+observed_rewards = ray.get([
+    arm1.get_reward.remote(amp, pulse_width),
+    arm2.get_reward.remote(amp, pulse_width)
+    # arm3.get_reward.remote(amp, pulse_width),
+    # arm4.get_reward.remote(amp, pulse_width)
+])
+
+# Retrieve ground truth rewards (noise-free)
+GT_rewards = ray.get([
+    arm1.get_ground_truth_reward.remote(amp, pulse_width),
+    arm2.get_ground_truth_reward.remote(amp, pulse_width)
+    # arm3.get_ground_truth_reward.remote(amp, pulse_width),
+    # arm4.get_ground_truth_reward.remote(amp, pulse_width)
+])
+
+for i in range(4):
+    print('Arm %d reward at iteration 0: %.2f (observed), %.2f (ground truth)' % (i+1, observed_rewards[i], GT_rewards[i]))
+
 
 # Old Thompson Sampling Code
 def non_stationary_bandit(total_iterations):
