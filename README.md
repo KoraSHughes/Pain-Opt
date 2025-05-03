@@ -21,5 +21,5 @@ Adaptive sampling and optimal control methods often overlook constraints needed 
   - results/* :: additional figures saved from the paper
 - Simulation:
   - pointElec_simulation.py :: NEURON connected point electrode simulation
-  - updated_run.py :: helper functions for NEURON connetion
+    - updated_run.py, ground_truth.py :: helper functions for NEURON connetion
   - Simple_Sim/* :: main simulation code
