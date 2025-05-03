@@ -7,23 +7,19 @@ Adaptive sampling and optimal control methods often overlook constraints needed 
 - Main Code:
   - painOpt.py :: main pain-informed optimization code
     - painModels.py :: main models of pain
-  - updated_run.py :: main traditional optimizers to be tested
+  - trad-bayes.py :: Traditional Bayesian Optimization Implementation
+  - optimizers/* :: additional implementations for optimizers
+    - optimizers/thompson.py :: Thompson Sampling Implementation (Weak Reward)
+    - optimizers/pain_info_bandit_arms :: Multi-Armed bandit with pain-influenced rewards
+    - optimizers/qlearning.py :: Basic Q-Learning Algorithm Implementation (Unfinished)
+    - optimizers/ax-bo.ipynb :: Early Bayesian Optimization algorithm once again for axis
+    - optimizers/custom-bo-example :: Working prototype of earlier implementation of PainOpt
+    - optimizers/hard_bayes.py :: Bayesian Optimization implementation test example
 - Visualizations:
   - analysis.ipynb :: main visualization of the basic pain models & tester code for the pain-recall
   - pain-injection-tests.ipynb :: investigation of pain-informed weights + visual examples
   - results/* :: additional figures saved from the paper
 - Simulation:
-  - ...
-- Optimizers:
-  - ax-bo.ipynb :: Early Bayesian Optimization algorithm once again for axis
-  - custom-bo-example :: Working prototype of earlier implementation of PainOpt
-  - hard_bayes.py :: Bayesian Optimization implementation test example
-  - pain_info_bandit_arms :: Multi-Armed bandit with pain-influenced rewards
   - pointElec_simulation.py :: NEURON connected point electrode simulation
-  - qlearning.py :: Basic Q-Learning Algorithm Implementation (Unfinished)
-  - thompson.py :: Thompson Sampling Implementation (Weak Reward)
-  - trad-bayes.py :: Traditional Bayesian Optimization Implementation
-
-### Execution
-- Thompson Sampling: python3 thompson.py
-- Q-Learning: python3 qlearning.py (Needs updating has errors)
+  - updated_run.py :: helper functions for NEURON connetion
+  - Simple_Sim/* :: main simulation code
