@@ -14,6 +14,15 @@ Adaptive sampling and optimal control methods often overlook constraints needed 
   - results/* :: additional figures saved from the paper
 - Simulation:
   - ...
+- Optimizers:
+  - ax-bo.ipynb :: Early Bayesian Optimization algorithm once again for axis
+  - custom-bo-example :: Working prototype of earlier implementation of PainOpt
+  - hard_bayes.py :: Bayesian Optimization implementation test example
+  - pain_info_bandit_arms :: Multi-Armed bandit with pain-influenced rewards
+  - pointElec_simulation.py :: NEURON connected point electrode simulation
+  - qlearning.py :: Basic Q-Learning Algorithm Implementation (Unfinished)
+  - thompson.py :: Thompson Sampling Implementation (Weak Reward)
+  - trad-bayes.py :: Traditional Bayesian Optimization Implementation
 
 ### Execution
 ...
