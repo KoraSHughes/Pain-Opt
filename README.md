@@ -1,22 +1,19 @@
 # Pain-Opt
-An investigation into pain-aware sampling in bayesian informed neural stimulation experiments
+An investigation into pain-aware sampling in Bayesian informed neural stimulation experiments
+## Abstract
+Adaptive sampling and optimal control methods often overlook constraints needed to ensure that sampled parameters do not compromise system integrity. This is especially significant in the context of human trials, where reinforcement learning methods may incentivize actions that are effective for reward maximization but risk causing physical/psychological damage to patients. In neurostimulation experiments, this means that adaptive sampling techniques such as Bayesian Optimization may incentivize the injection of large current waveforms that inadvertently cause tissue damage or severe pain. Though hard limitations on waveform exploration are applied to ensure patient safety, they often still incentivize the most painful solutions and fail to take into account more complex, time-variant models of pain. To remedy this, we propose PainOpt; a pain-informed adaptive sampling method and data-driven model that leverages a time-variant understanding of patient pain to minimize recalled pain. When benchmarked against traditional sampling methods with no consideration of pain, we observe a 37+% reduction in recalled pain while preserving the original treatment objective.
 
-Adaptive sampling and optimal control methods often overlook constraints needed to ensure that sampled parameters do not compromise system integrity. This is especially significant in the context of human trials where reinforcement learning methods may incentivize actions that are effective for reward maximization but risk causing physical/psycological damage to the patient themselves. Since patient comfort & retention is often at odds with optimal discovery, proper balancing of these incentives is necessary to manage patient expieriences while maximizing trial effectiveness. When, applied to neurostimulation, adaptive sampling techniques such as bayes optimization may similarly incentivize injection of large current waveforms that inadvertently cause tissue damage or severe pain. In all applications, this problem is made more difficult by the fact that these safety constraints are often not well-defined and known a-priori. As such, several papers in the field of control theory have investigated methods to enforce these constraints without hindering model performance. The purpose of our proposal is to highlight prior efforts towards this front and apply them in conjunction with neuropsychological understandings of pain to create data driven decision policy that increases patient retention in noninvasive neurostimulation. We will benchmark our model against the case where there is no consideration of pain to validate whether there is a significant reduction in model performance.
+## Repository Navigation
+- Main Code:
+  - painOpt.py :: main pain-informed optimization code
+    - painModels.py :: main models of pain
+  - updated_run.py :: main traditional optimizers to be tested
+- Visualizations:
+  - analysis.ipynb :: main visualization of the basic pain models & tester code for the pain-recall
+  - pain-injection-tests.ipynb :: investigation of pain-informed weights + visual examples
+  - results/* :: additional figures saved from the paper
+- Simulation:
+  - ...
 
-> The basis behind our model is driven by two well researched principles of pain:
-## Principle 1
-Post-hoc perception of pain, aka memory of pain (MOP), tends to follow the peak-end rule, which represents a psychological heuristic wherein an individual judges an experience based on how they felt at its peak, and towards the end. We can draw parallels between the peak-end rule, and post-hoc patient response during stimulation, given that participants are more likely to report/recall less painful experiences should the experiment end on less painful trials. Given this phenomena, we plan to develop a model for associating MOP with stimulation parameters such as current amplitude and pulse width.
-## Principle 2
-In addition to post-hoc perception of pain, inter-experimental pain perception is influenced by stimulation-event relative shifts; i.e. large jumps in pain-correlated stimulation parameters can distort perceived pain – increase perceived pain due to large increases in pain-inducing parameters and vice versa. Therefore, at least when ascending the latent pain scale, minimal jumps in stimulation parameters is preferable. Given a prior describing patient pain as a function of our model parameters or inputs, we can extract this relative pain distortion or RPD and use it to further inform our understanding of patient pain across trials.
-
-## Model Creation/Evaluation
-Using these two pain principles, MOP & RPD, we will evaluate various techniques such as Bayesian Optimization (BO) or Thompson Sampling (TS) when tasked with identifying stimulation parameters that maximize firing rate within NEURON modules on our stimulation platform. We will define a new MOP & RPD-informed acquisition functions that ensure (1) the pain distortion between consecutive samples is low – minimizing RPD – and (2) sampled parameters towards the end of the experiment are low – minimizing MOP. By contrasting the performance of these models with the traditional BO and TS models, we can gain further insights into the performance-pain tradeoff of sampling models.
-
-## Implementation Details
-For the purposes of this project, we will be using a prior repository of pain scores associated with different stimulation parameters. The NEURON platform will be used to assess the firing rate of a select neuron in response to those parameters. In the event that we cannot find an appropriate repository, we will define a latent pain function dependent in some fashion to the stimulation parameters (for the purposes of this study, it is not very important that these pain scores reflect true conditions; we just want to ensure that employed models can find suitable parameters below these constraints).
-The model will be compared to Safe model-based RL(Berkenkamp et al. 2017) and ECCBO(Krishnamoorthy 2024).
-
-### Additional Models
-Safe model-based RL: Uses Lyapunov functions and Gaussian process models to safely explore the search space and collect data only within the estimated region of attraction which is expanded over time.
-ECCBO: Uses a feedback controller to enforce constraint values as trackable setpoints, transforming the problem into an unconstrained one. Bayesian optimization then searches over these safe setpoints to minimize cost. 
-All models (including our own) will be assessed on their ability to recover high-performing stimulation parameters while minimizing predicted pain. Specifically, we will compare the overlap in optimal parameter regions and compute the difference in cumulative predicted pain, defining success as achieving similar task performance with lower pain burden.
+### Execution
+...
