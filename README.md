@@ -25,4 +25,5 @@ Adaptive sampling and optimal control methods often overlook constraints needed 
   - trad-bayes.py :: Traditional Bayesian Optimization Implementation
 
 ### Execution
-...
+- Thompson Sampling: python3 thompson.py
+- Q-Learning: python3 qlearning.py (Needs updating has errors)
