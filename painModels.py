@@ -7,7 +7,7 @@ Evaluate model pain via pain_recall()
 """
 
 MAX_PAIN = 10
-def instant_pain(params, max_params=[5, 50], weights=[3,2]):
+def instant_pain(params, max_params=[198, 15], weights=[3,2]):
     """ Input: params = [amplitude, pulse_width], maximum bounds of those params, weight
         Output: [pain]"""
     # *Note: amplitude in microvolts, pulse-width in microseconds
