@@ -10,3 +10,4 @@ venv.bak/
 # Directories
 # NOTE: Included this dir as there are files that changed during an edit in VScode, and I'm unsure why
 simulation/x86_64
+/Simple_Sim
