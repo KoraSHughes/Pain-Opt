@@ -1,3 +1,6 @@
+"""
+NOTE: This is an outdated implementation of the pain-informed bandit. Do NOT reference.
+"""
 from matplotlib import pyplot as plt
 from pointElec_simulation import pointElec_simulation # Used for point electrode simulation from NEURON moodule
 from helper import firing_rate # Helper function for calculating the firing rate.
